@@ -5,7 +5,21 @@
         <meta charset="UTF-8"/>
       </head>
       <body>
+
+
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+        
+
         <script>
+
+            let playerSelection = "";
+            let computerSelection = "";
+            let playerScore = 0;
+            let computerScore = 0;
+            let result;
+            
             function computerPlay(){
                 let rand = Math.random()
                 if (rand <= 0.33){
@@ -41,7 +55,7 @@
                 }
                 else if (playerSelection == "paper" && computerSelection == "scissors"){
                     computerScore++
-                    return "You Lose! Scissors beats Paper"                  
+                    return "You Lose! Scissors beats Paper"                        
                 }
                 else if (playerSelection == "scissors" && computerSelection == "scissors"){
                     return "You Draw! You both picked Scissors"                 
@@ -56,33 +70,37 @@
                 }
             }
 
-            let playerSelection = "";
-            let computerSelection = "";
-            let playerScore = 0;
-            let computerScore = 0;
+            const buttons = document.querySelectorAll('button')
+            buttons.forEach((button) => {
+                button.addEventListener('click', function(game) {
+                    playerSelection = button.id;
+                    computerSelection = computerPlay();
+                    playRound(playerSelection, computerSelection);
+                    addResults();
+                })
+            })
 
-            function game(){    
-                computerSelection = computerPlay();           
-                playerSelection = prompt("Please make your selection.")
-                console.log(playRound(playerSelection, computerSelection))
-                computerSelection = computerPlay();
-                playerSelection = prompt("Please make your selection.")
-                console.log(playRound(playerSelection, computerSelection))
-                computerSelection = computerPlay();
-                playerSelection = prompt("Please make your selection.")
-                console.log(playRound(playerSelection, computerSelection))
-                computerSelection = computerPlay();
-                playerSelection = prompt("Please make your selection.")
-                console.log(playRound(playerSelection, computerSelection))
-                computerSelection = computerPlay();
-                playerSelection = prompt("Please make your selection.")
-                console.log(playRound(playerSelection, computerSelection))
-                if (playerScore>computerScore){
-                    return 'You win the game! Congratulations'
-                }
-                else{
-                    return 'You lost! Try again'
-                }
+            function addResults(){
+            const parent = document.querySelector('body');
+            const results = document.createElement('div');
+            results.textContent = "Your Score: " + playerScore + " Computer's Score: " + computerScore;
+            results.style.backgroundColor = 'white';
+            results.style.color = "black";
+            results.style.width = '100%';
+            results.style.height = '4fr';
+            results.style.padding = '0.5rem';
+            if (playerScore >= 5){
+                results.textContent = "Congratulations! You win!"
+                playerScore = 0;
+                computerScore = 0;
+            }
+            else if (computerScore >= 5){
+                results.textContent = "Computer wins!"
+                playerScore = 0;
+                computerScore = 0;
+            }
+
+            parent.appendChild(results)
             }
         </script>
       </body>
